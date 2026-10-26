@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "DirectCrystalFlow: symmetry-aware crystal generation by flow matching over asymmetric-unit sites"
+type: software
+authors:
+  - family-names: "<FAMILY NAME>"
+    given-names: "<GIVEN NAME>"
+    affiliation: "<AFFILIATION>"
+    orcid: "https://orcid.org/<ORCID>"
+license: MIT
+repository-code: "https://github.com/<USER>/DirectCrystalFlow"
+version: "1.0.0"
+date-released: "<YYYY-MM-DD>"
+keywords: [crystal generation, flow matching, materials discovery, space groups, Wyckoff positions]
+preferred-citation:
+  type: article
+  title: "<PAPER TITLE>"
+  authors:
+    - family-names: "<FAMILY NAME>"
+      given-names: "<GIVEN NAME>"
+  journal: "<JOURNAL or arXiv>"
+  year: <YEAR>

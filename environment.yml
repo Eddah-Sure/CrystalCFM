@@ -1,0 +1,10 @@
+name: dcflow
+channels: [pytorch, nvidia, conda-forge]
+dependencies:
+  - python=3.11
+  - pytorch>=2.1
+  - pytorch-cuda=12.1      # remove for CPU-only
+  - pip
+  - pip:
+      - -r requirements.txt
+      - -r requirements-eval.txt

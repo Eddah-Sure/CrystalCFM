@@ -1,0 +1,26 @@
+# checkpoints, logs, run outputs
+*.pt
+*.ckpt
+runs/
+samples/
+*.log
+run_config.json
+# evaluation caches and large outputs (archive on Zenodo instead)
+*_cache.pkl
+*_cache.npz
+*_cache.json
+*_hull_refs_*.json
+*_generated.npz
+*_per_structure.npz
+results/**/*.pkl
+results/figures*/
+# data
+data/mp_20/
+data/raw/
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+.env

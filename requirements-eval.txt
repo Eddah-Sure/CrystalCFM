@@ -1,0 +1,13 @@
+# scripts/evaluate.py
+matminer>=0.9           # CrystalNN + Magpie fingerprints (coverage)
+smact>=2.5              # composition gate (the smact14 list is used when available)
+spglib>=2.0
+ase>=3.22
+tqdm
+# figures
+umap-learn>=0.5         # optional; PCA is used without it
+# stability / S.U.N. / conditional fidelity: ONE machine-learned force field
+chgnet>=0.3             # or: mattersim | mace-torch | orb-models
+# optional
+# mp-api                # Materials Project phases in the hull (needs MP_API_KEY)
+# cdvae                 # CDVAE's fixed CompScaler constants (exact COV)

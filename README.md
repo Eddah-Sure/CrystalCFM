@@ -1,22 +1,6 @@
-# DirectCrystalFlow
+# AtomGraphFlow
 
-**Symmetry-aware crystal generation by flow matching over a latent set of asymmetric-unit sites, with an exact composition planner.**
-
-DirectCrystalFlow generates periodic crystals conditioned on a target property (formation energy) and, optionally, a space group. A flow model moves 20 latent site tokens from noise to a crystal latent. A decoder reads out one asymmetric unit with Wyckoff positions, an autoregressive planner chooses how many sites each element occupies, and whole-orbit expansion builds the full cell. The requested space group is built in by construction rather than repaired afterwards.
-
-<p align="center">
-  <img src="docs/figures/directcrystalflow_architecture.png" width="760" alt="DirectCrystalFlow architecture">
-</p>
-
-## What is different
-
-- **Latent site-set flow.** A frozen equivariant GNN encoder maps each real crystal to 20 tokens × 64 dimensions, one token per asymmetric-unit site, in a canonical order, with learned "empty" tokens for unused slots. The flow matches noise to these encoder latents, so it learns over sites, not atoms.
-- **Wyckoff-projected decoding.** Each site gets a Wyckoff class (masked to the classes of the requested group), and its position is projected onto that class's subspace: *f* = *P*(*a* − *o*) + *o*. Multiplicities come from an exact table. Fixed-point classes are used at most once.
-- **Composition planner over sites, drawn after conflict resolution.** A GRU emits (element, number of sites) pairs in ascending electronegativity, under masks that make the plan fill the site count exactly. The plan is drawn *after* the conflict resolver has relocated or dropped clashing sites, so it is written for the sites that actually exist. It is then realised exactly, with high-multiplicity sites choosing first.
-- **Guidance on property and symmetry.** Classifier-free guidance on *y* and on the space group in the flow; guidance on *y* on the planner's logits before masking.
-
-See [`docs/architecture.md`](docs/architecture.md) for the full description and every default hyperparameter.
-
+Generative models for inorganic crystals usually leave symmetry, and often chemistry, to emerge from the data or to be imposed after sampling. We present \agf{}, a model that first plans and then flows. An autoregressive planner samples the primitive-cell atom count, the space group and a sequence of Wyckoff orbits, each an (element, Wyckoff letter) pair, so composition and symmetry are decided together. A combinatorial feasibility oracle guarantees that every plan fills the cell exactly. A flow-matching network then transports only the free Wyckoff parameters on the torus, together with a lattice restricted to its crystal system, so every sample is symmetric by construction. The planner also keeps an exact formal-charge account, stored as two bit sets of reachable total charges that encode single-oxidation-state neutrality and the Pauling ordering of the SMACT screen. A look-ahead derived from these sets informs both planner decisions as a learned term, not a constraint. On an MP-20-derived benchmark, unconditional samples reach 98.1\% structural and 83.6\% compositional validity, compared with 91.1\% for the test crystals under the same screen. Coverage recall and precision are 99.5\% and 99.3\%, the space-group distribution lies within a Kullback--Leibler divergence of 0.060 of the test set, and the planned space group matches the detected group at $10^{-3}\ang$ for 97.9\% of samples. Of 250 samples relaxed with CHGNet against a hull of MP-20 phases, 29.2\% are stable within 0.1 eV/atom of the hull, unique and novel, and 7.6\% meet the stricter 0 eV/atom threshold. With formation-energy conditioning, CHGNet-relaxed crystals track the target with Spearman $\rho=0.90$ and slope 0.99.
 ## Repository layout
 
 ```
